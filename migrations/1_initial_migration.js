@@ -1,125 +1,52 @@
-const { strict: assert } = require('assert');
+const DIMP = artifacts.require("DIMP");
+const DIMPInternalExchange = artifacts.require("DIMPInternalExchange");
+const DIMPSwap = artifacts.require("DIMPSwap");
+const USDC = artifacts.require("USDC");
+const fs = require("fs");
 
-const LandNFTPass = artifacts.require("LandNFTPass");
+const whiltelistAddresses = [
+  "0x47dD6Df8e066617b0eD5BEAC914eefe27Cf63978",
+  "0xeaD7411f482223D0b4414845550A2163b571220c",
+  "0xcdc7ccA7155faeD56027065Cde224836c9452237",
+];
+
+const whiltelistAmounts = [
+  "39546534860000000",
+  "79093069720000000",
+  "118639604582000000",
+];
 
 module.exports = async function (deployer) {
+  // await deployer.deploy(
+  //   DIMP,
+  //   whiltelistAddresses,
+  //   whiltelistAmounts,
+  //   "0x42E9226c29d10a58E4645A65Baa1Ae0d4E5D3a6C",
+  //   "0x3F8C493dAD7e63CE88C78b6932101e21680BF355",
+  //   "0x77049cabEcf13f432374270061955221b1268b1E",
+  // );
+  // const dimp = await DIMP.deployed();
 
-  await deployer.deploy(LandNFTPass, "0x24886A988Aa9a46166960146e462A2C41e6a05AE", "0x0000000000000000000000000000000000001010");
+  await deployer.deploy(DIMPInternalExchange, "0xecE1CD361F9eb015F9bcd407370a39BBb91f995E"); // dimp.address);
+  const exchange = await DIMPInternalExchange.deployed();
 
-  const landnftpass = await LandNFTPass.deployed();
+  // await deployer.deploy(
+  //   DIMPSwap,
+  //   "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+  //   "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45", // "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+  //   "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
+  //   "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+  // );
+  // const swap = await DIMPSwap.deployed();
 
-  console.log("LandNFTPass deployed at:", landnftpass.address);
+  // await deployer.deploy(USDC);
+
+  // fs.writeFileSync(
+  //   "./migrations/deployed.json",
+  //   JSON.stringify({
+  //     // DIMP: dimp.address,
+  //     // DIMPInternalExchange: exchange.address,
+  //     DIMPSwap: swap.address,
+  //   }),
+  // );
 };
-
-// const PASSPORTMINT = artifacts.require("PassportMint");
-
-// module.exports = async function (deployer) {
-
-
-//   await deployer.deploy(PASSPORTMINT);
-
-//   const passportmint = await PASSPORTMINT.deployed();
-
-//   console.log("PreSeed Vesting deployed at:", passportmint.address);
-// };
-
-//-----------------------DIMP STAKING CONTRACT-----------------------------
-// const PRESEED = artifacts.require("PreSeedVesting");
-
-// module.exports = async function (deployer) {
-
-//   const tokenAddr = "0xb125c3cafE22EAEbB152a987E3590bFAB17b7F4b"
-
-//   await deployer.deploy(
-//     PRESEED,
-//     tokenAddr,
-//     1685712928
-//   );
-
-//   const preSeed = await PRESEED.deployed();
-
-//   console.log("PreSeed Vesting deployed at:", preSeed.address);
-// };
-
-// ---------------------------DIMP TOKEN CONTRACT-----------------------------
-// const DIMP = artifacts.require("DIMP");
-
-// const Addresses = {
-//   PreSeed: process.env.PRESEED_ADDRESS,
-//   Seed: process.env.SEED_ADDRESS,
-//   PrivateA: process.env.PRIVATEA_ADDRESS,
-//   PrivateB: process.env.PRIVATEB_ADDRESS,
-//   Public: process.env.PUBLIC_ADDRESS,
-//   Advisors: process.env.ADVISORS_ADDRESS,
-//   Team: process.env.TEAM_ADDRESS,
-//   Partnership: process.env.PARTNERSHIP_ADDRESS,
-//   Ecosystem: process.env.ECOSYSTEM_ADDRESS,
-//   GameActivity: process.env.GAMEACTIVITY_ADDRESS,
-//   LiquidityPool: process.env.LIQUIDITYPOOL_ADDRESS
-// }
-
-// module.exports = async function (deployer) {
-//   let allocations;
-
-//   const totalSupply = 237279209162n * 10n**6n;
-
-//   const percentage = (percent) => (totalSupply * percent) / 1000n;
-
-//     allocations = [
-//       // pre-seed
-//       { address: Addresses.PreSeed, tokens: percentage(5n) },
-
-//       // seed
-//       { address: Addresses.Seed, tokens: percentage(20n) },
-
-//       // private sale 1
-//       { address: Addresses.PrivateA, tokens: percentage(50n) },
-
-//       // private sale 2
-//       { address: Addresses.PrivateB, tokens: percentage(50n) },
-
-//       // public sale
-//       { address: Addresses.Public, tokens: percentage(15n) },
-
-//       // advisors
-//       { address: Addresses.Advisors, tokens: percentage(10n) },
-
-//       // team & development
-//       { address: Addresses.Team, tokens: percentage(150n) },
-
-//       // partnerships
-//       { address: Addresses.Partnership, tokens: percentage(60n) },
-
-//       // ecosystem
-//       { address: Addresses.Ecosystem, tokens: percentage(100n) },
-
-//       // game activities
-//       { address: Addresses.GameActivity, tokens: percentage(300n) },
-
-//       // liquidity pool
-//       { address: Addresses.LiquidityPool, tokens: percentage(240n) },
-
-//     ];
-
-//   const totalAllocated = allocations.reduce((a, b) => a + b.tokens, 0n);
-//   const totalPercent = Number(totalAllocated * (100n * 1000n) / totalSupply) / 1000;
-
-//   assert(totalPercent === 100, `allocations must add up to 100% but is ${totalPercent}%`);
-//   assert(totalAllocated === totalSupply, `allocations must add up to ${totalSupply} but is ${totalAllocated}`);
-//   // for (const k in CONTRACTS) {
-//   //   assert(!!CONTRACTS[k], `env.${k} is missing`);
-//   // }
-
-//   await deployer.deploy(
-//     DIMP,
-//     allocations.map(({ address }) => address),
-//     allocations.map(({ tokens }) => tokens.toString()),
-//     Addresses.LiquidityPool,
-//     Addresses.Ecosystem,
-//     Addresses.Partnership
-//   );
-
-//   const dimp = await DIMP.deployed();
-
-//   console.log("DIMP deployed at:", dimp.address);
-// };
